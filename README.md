@@ -14,14 +14,13 @@ a console-style virtual tamagotchi with a c++ backend and web frontend.
 
 ## installation
 
-´´´bash
-#backend
+```bash
+# backend
 cd backend
 mkdir build && cd build
 cmake ..
 make
 ./deragotchi_server
-´´´
 
-#frontend
+# frontend
 open http://localhost:8080 in your browser
