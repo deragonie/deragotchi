@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>deragotchi - virtual console</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="console-container">
+      <div class="console-header">
+          <div class="console-buttons">
+              <span class="console-btn close"></span>
+              <span class="console-btn minimize"></span>
+              <span class="console-btn maximize"></span>
+          </div>
+          <div class="console-title">
+              <i class="fas fa-terminal"></i> Deragotchi Terminal v1.0 - ArchLinux
+          </div>
+      </div>
+      
+      <div class="console-body">
+          <!-- dibujitos -->
+          <div class="tamagotchi-display">
+              <div class="tamagotchi-screen">
+                  <div class="tamagotchi-visual">
+                      <div class="pet-image-container">
+                          <img id="pet-image" src="assets/pet-normal.png" alt="Deragotchi" class="pet-image">
+                      </div>
+                      <div class="pet-info">
+                          <div class="pet-name-container">
+                              <span class="info-label">NOMBRE:</span>
+                              <span id="pet-name" class="info-value">Deragotchi</span>
+                          </div>
+                          <div class="pet-status-container">
+                              <span class="info-label">ESTADO:</span>
+                              <span id="pet-status" class="info-value status-normal">NORMAL</span>
+                          </div>
+                          <div class="pet-age-container">
+                              <span class="info-label">EDAD:</span>
+                              <span id="pet-age" class="info-value">0 ciclos</span>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <!-- status bar -->
+                  <div class="status-bars">
+                      <div class="status-line">
+                          <span class="status-label">
+                              <i class="fas fa-hamburger"></i> [hungry]
+                          </span>
+                          <div class="progress-bar">
+                              <div class="progress-fill" id="hunger-bar"></div>
+                          </div>
+                          <span class="status-value" id="hunger-value">100%</span>
+                      </div>
+                      
+                      <div class="status-line">
+                          <span class="status-label">
+                              <i class="fas fa-smile"></i> [happiness]
+                          </span>
+                          <div class="progress-bar">
+                              <div class="progress-fill" id="happiness-bar"></div>
+                          </div>
+                          <span class="status-value" id="happiness-value">100%</span>
+                      </div>
+                      
+                      <div class="status-line">
+                          <span class="status-label">
+                              <i class="fas fa-bolt"></i> [energy]
+                          </span>
+                          <div class="progress-bar">
+                              <div class="progress-fill" id="energy-bar"></div>
+                          </div>
+                          <span class="status-value" id="energy-value">100%</span>
+                      </div>
+                      
+                      <div class="status-line">
+                          <span class="status-label">
+                              <i class="fas fa-shower"></i> [cleaning]
+                          </span>
+                          <div class="progress-bar">
+                              <div class="progress-fill" id="cleanliness-bar"></div>
+                          </div>
+                          <span class="status-value" id="cleanliness-value">100%</span>
+                      </div>
+                  </div>
+                  
+                  <!-- status -->
+                  <div class="status-indicators">
+                      <div class="indicator" id="alive-indicator">
+                          <span class="indicator-dot alive"></span>
+                          <span class="indicator-text">alive</span>
+                      </div>
+                      <div class="indicator" id="sleep-indicator">
+                          <span class="indicator-dot"></span>
+                          <span class="indicator-text">awake</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- action buttons -->
+              <div class="console-controls">
+                  <div class="control-row">
+                      <button class="console-btn-action btn-feed" onclick="sendCommand('feed')">
+                          <div class="btn-icon">
+                              <i class="fas fa-utensils"></i>
+                          </div>
+                          <div class="btn-text">
+                              <div class="btn-title">feed</div>
+                              <div class="btn-desc">less hungry</div>
+                          </div>
+                      </button>
+                      
+                      <button class="console-btn-action btn-play" onclick="sendCommand('play')">
+                          <div class="btn-icon">
+                              <i class="fas fa-gamepad"></i>
+                          </div>
+                          <div class="btn-text">
+                              <div class="btn-title">play</div>
+                              <div class="btn-desc">you make me happy!</div>
+                          </div>
+                      </button>
+                  </div>
+                  
+                  <div class="control-row">
+                      <button class="console-btn-action btn-sleep" onclick="sendCommand('sleep')" id="sleep-btn">
+                          <div class="btn-icon">
+                              <i class="fas fa-bed"></i>
+                          </div>
+                          <div class="btn-text">
+                              <div class="btn-title">two mimir</div>
+                              <div class="btn-desc">recovering energy</div>
+                          </div>
+                      </button>
+                      
+                      <button class="console-btn-action btn-wake" onclick="sendCommand('wake')" id="wake-btn" style="display:none">
+                          <div class="btn-icon">
+                              <i class="fas fa-sun"></i>
+                          </div>
+                          <div class="btn-text">
+                              <div class="btn-title">wakeywakey</div>
+                              <div class="btn-desc">ending dreams</div>
+                          </div>
+                      </button>
+                      
+                      <button class="console-btn-action btn-clean" onclick="sendCommand('clean')">
+                          <div class="btn-icon">
+                              <i class="fas fa-shower"></i>
+                          </div>
+                          <div class="btn-text">
+                              <div class="btn-title">clean</div>
+                              <div class="btn-desc">more clean</div>
+                          </div>
+                      </button>
+                  </div>
+              </div>
+              
+              <!-- interactive commands -->
+              <div class="command-input">
+                  <span class="prompt">deragotchi@console:~$</span>
+                  <input type="text" id="command-input" placeholder="write 'help' to see commands" 
+                         onkeypress="handleCommandKey(event)" autocomplete="off">
+                  <button class="btn-enter" onclick="executeCommand()">
+                      <i class="fas fa-terminal"></i> execute
+                  </button>
+              </div>
+              
+              <!-- command history  -->
+              <div class="command-history" id="command-history">
+              </div>
+          </div>
+          
+          <!-- footer -->
+          <div class="console-footer">
+              <div class="footer-info">
+                  <span class="footer-item"><i class="fas fa-server"></i> SERVER: localhost:8080</span>
+                  <span class="footer-item"><i class="fas fa-heartbeat"></i> health: <span id="health-status">OK</span></span>
+                  <span class="footer-item"><i class="fas fa-clock"></i> uptime: <span id="uptime">00:00:00</span></span>
+              </div>
+              <div class="footer-status">
+                  <span id="connection-status" class="connected">
+                      <i class="fas fa-plug"></i> connected
+                  </span>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
