@@ -529,7 +529,7 @@ body {
 
 
 .pet-image.sleeping {
-    filter: brightness(80%) blur(1px);
+    filter: brightness(80%);
     animation: breathing 3s ease-in-out infinite;
 }
 
