@@ -125,11 +125,17 @@ body {
 }
 
 .pet-image {
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 200px;
     object-fit: contain;
-    image-rendering: pixelated; /* Para que se vea bien pixel art */
-    transition: transform 0.3s ease;
+    image-rendering: auto;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+    transition: filter 0.3s ease, transform 0.2s ease;
+    -webkit-font-smoothing: antialised;
+    -moz-osx-font-smoothing: grayscale;
+    object-fit: contain;
 }
 
 .pet-image:hover {
