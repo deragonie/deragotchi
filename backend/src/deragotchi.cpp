@@ -6,6 +6,14 @@
 using namespace std;
 using namespace std::chrono;
 
+/*aux to keep the values between 0 and 100,
+it fix the case of negatives values*/
+int keepVal(int value, int mn = 0, int mx = 100) {
+  if (value < mn) return mn;
+  if (value > mx) return mx;
+  return value;
+}
+
 deragotchi::deragotchi(string name) :
   name(name), hunger(50), happiness(50),
   cleanliness(50), energy(50),
@@ -17,10 +25,10 @@ deragotchi::deragotchi(string name) :
 also decreasing the hunger and cleanliness*/
 void deragotchi::feed(){
   if (!isAlive or isSleeping) return;
-  hunger = min(100, hunger-20);
-  energy = min(100, energy+10);
-  cleanliness = max(0, cleanliness-10);
-  happiness = min(100, happiness+5);
+  hunger = keepVal(hunger-20);
+  energy = keepVal(energy+10);
+  cleanliness = keepVal(cleanliness-10);
+  happiness = keepVal(happiness+5);
   upd();
 }
 
@@ -28,9 +36,9 @@ void deragotchi::feed(){
 but the pet gets tired and dirty*/
 void deragotchi::play(){
   if (!isAlive or isSleeping) return;
-  happiness = min(100, happiness+30);
-  energy = max(0, energy-15);
-  cleanliness = max(0,cleanliness-20);
+  happiness = keepVal(happiness+30);
+  energy = keepVal(energy-15);
+  cleanliness = keepVal(cleanliness-20);
   upd();
 }
 
@@ -38,7 +46,7 @@ void deragotchi::play(){
 void deragotchi::sleep(){
   if (!isAlive or isSleeping) return;
   isSleeping = true;
-  energy = min(100, energy+40);
+  energy = keepVal(energy+40);
   upd();
 }
 
@@ -46,8 +54,8 @@ void deragotchi::sleep(){
 but they get sad because they dont like baths*/
 void deragotchi::clean(){
   if (!isAlive or isSleeping) return;
-  cleanliness = min(100, cleanliness+30);
-  happiness = max(0,happiness-5);
+  cleanliness = keepVal(cleanliness+30);
+  happiness = keepVal(happiness-5);
   upd();
 }
 
@@ -65,17 +73,17 @@ void deragotchi::upd(){
   auto now = steady_clock::now();
   long lapsed = duration_cast<seconds>(now-lastUpd).count();
 
-  if (lapsed<1) return;
+  if (lapsed<2) return;
 
   if (!isSleeping) {
-    hunger = min(100, hunger+5);
-    energy = max(0, energy-3);
-    cleanliness = max(0, cleanliness-1);
+    hunger = keepVal(hunger+3);
+    energy = keepVal(energy-2);
+    cleanliness = keepVal(cleanliness-1);
 
-    if (hunger>80) happiness = max(0,happiness-2);
-    if (cleanliness<20) happiness = max(0,happiness-2);
+    if (hunger>80) happiness = keepVal(happiness-2);
+    if (cleanliness<20) happiness = keepVal(happiness-2);
   } else {
-    energy = min(100, energy+10);
+    energy = keepVal(energy+5);
     if (energy>=100) wakeywakey();
   }
   
@@ -106,7 +114,8 @@ string deragotchi::toJSON() const {
      << "\"cleanliness\":" << cleanliness << ","
      << "\"isAlive\":" << (isAlive ? "true" : "false") << ","
      << "\"isSleeping\":" << (isSleeping ? "true" : "false") << ","
-     << "\"mood\":\"" << getmood() << "\""
+     << "\"mood\":\"" << getmood() << "\","
+     << "\"age\":0"
      << "}";
   return json.str();
 }
